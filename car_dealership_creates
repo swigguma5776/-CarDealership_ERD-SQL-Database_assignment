@@ -1,0 +1,56 @@
+CREATE TABLE IF NOT EXISTS sales_person (
+	sales_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(100),
+	last_name VARCHAR(100),
+	phone_number VARCHAR(15)
+);
+
+CREATE TABLE IF NOT EXISTS customer (
+	customer_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(100),
+	last_name VARCHAR(100),
+	address VARCHAR(20),
+	billing_info VARCHAR(20)
+);
+
+CREATE TABLE IF NOT EXISTS vehicle (
+	vehicle_id SERIAL PRIMARY KEY,
+	make VARCHAR(100),
+	model VARCHAR(100),
+	vehicle_year VARCHAR(100),
+	mileage NUMERIC(8,2),
+	for_sale VARCHAR(10)
+);
+
+CREATE TABLE IF NOT EXISTS sales_invoice (
+	invoice_id SERIAL PRIMARY KEY,
+	sales_id INTEGER NOT NULL,
+	customer_id INTEGER NOT NULL,
+	vehicle_id INTEGER NOT NULL,
+	price NUMERIC(8,2),
+	sale_date DATE DEFAULT CURRENT_DATE,
+	FOREIGN KEY(customer_id) REFERENCES customer(customer_id),
+	FOREIGN KEY(vehicle_id) REFERENCES vehicle(vehicle_id),
+	FOREIGN KEY(sales_id) REFERENCES sales_person(sales_id)
+);
+
+CREATE TABLE IF NOT EXISTS mechanic (
+	mechanic_id SERIAL PRIMARY KEY,
+	first_name VARCHAR(100),
+	last_name VARCHAR(100)
+);
+
+CREATE TABLE IF NOT EXISTS service_invoice (
+	service_id SERIAL PRIMARY KEY,
+	customer_id INTEGER NOT NULL,
+	vehicle_id INTEGER NOT NULL,
+	mechanic_id INTEGER NOT NULL,
+	service_type VARCHAR(100),
+	price NUMERIC(8,2),
+	parts_needed VARCHAR(100),
+	repair_date DATE DEFAULT CURRENT_DATE,
+	FOREIGN KEY(customer_id) REFERENCES customer(customer_id),
+	FOREIGN KEY(vehicle_id) REFERENCES vehicle(vehicle_id),
+	FOREIGN KEY(mechanic_id) REFERENCES mechanic(mechanic_id)
+);
+
